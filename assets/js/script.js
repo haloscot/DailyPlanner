@@ -1,38 +1,65 @@
-$( document ).ready(function() {
+$(document).ready(function() {
 
-  var date = moment().format();
-    $('#today').text(date);
+  //push date to bottom of jumbotron
+  var now = moment().format('DD MMM YYYY');
+  $('#currentDay').text(now);
+
+  //get the hour of day to set colours for hour element.
+  var hourEl = moment().get('hour');
+
+  var test = $(".hour");
+
+  // change colour of time span based on time of day.
+  $.each(test, function() {
+      if ($( this ).attr('value') > hourEl) {
+          test.addClass( "future" );
+          console.log(test);
+      }
+      else if ($( this ).attr('value') === hourEl) {
+          test.addClass( "present" );
+      }
+      else {
+          test.addClass( "past" );
+      }
+  });
+
+
+  //Event listener for all buttons
+  $('#saveBtn').click(function(event) {
+      var valueAttr = ("data-hour").val();
+      var notes = JSON.parse(window.localStorage.getItem("#description"));
+      console.log('clicked', $(this.text()));
+      alert("Save button clicked!");
+  });
+
+  $("#saveBtn").click(function() {
+      var value = $("#saveBtn").index(this)
+      console.log(value);
+  });
 });
 
-var now = moment().get('hour');
-    console.log(date.hour);
+// additional functions:
 
-    var content = $('.content')
-    console.log(content);
+// Copy text from text area to clipboard
 
-    content.text("testing");
+// function copyToClipboard() {
+//   var passwordText = document.querySelector("#password");
 
+//   passwordText.select();
+//   document.execCommand("copy");
+//   alert(
+//     "Your password " + passwordText.value + " was copied to your clipboard."
+//   );
+// }
 
-    $(document).on('click', '.content', function(event)
-{
-	event.preventDefault();
+// local storage set/get
 
-	if($(this).attr('edit_type') == 'button')
-	{
-		return false;
-	}
+// function printHighscores() {
+//   // either get scores from localstorage or set to empty array
+//   var notes = JSON.parse(window.localStorage.getItem("#description")) || [];
 
-	//make div editable
-	$(this).closest('div').attr('contenteditable', 'true');
-	//add bg css
-	$(this).addClass('bg-warning');
-
-	$(this).focus();
-});
-
-$(document).on('blur', '.content', function(event) {
-    $(this).closest('div').attr('contenteditable', 'false');
-    $(this).removeClass('bg-warning');
-    // $(this).unfocus();
-
-});
+//   // sort highscores by score property in descending order
+//   notes.sort(function(a, b) {
+//     return b.score - a.score;
+//   });
+// }
